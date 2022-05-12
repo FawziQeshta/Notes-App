@@ -7,5 +7,6 @@ class AppColors {
   static const Color lightGray = Color(0xFFA5A5A5);
   static const Color blue = Color(0xFF6A90F2);
   static const Color titleCategory = Color(0xFF111111);
+  static const Color line = Color(0xFFD0D0D0);
 
 }
