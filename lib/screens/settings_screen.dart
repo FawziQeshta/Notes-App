@@ -81,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               buildSettingItem('assets/icons/identity.svg',
                   'Profile', 'Update your data…',
-                  (){Get.to(ProfileScreen());}, true),
+                  (){Get.to(const ProfileScreen());}, true),
 
               buildSettingItem('assets/icons/device_information.svg',
                   'About App', 'What is notes app?',
@@ -186,7 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   buildBlueRightPart(bool isRightBlue) {
-    if(!isRightBlue)
+    if(!isRightBlue) {
       return Container(
         width: 4,
         decoration: const BoxDecoration(
@@ -197,14 +197,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               bottomLeft: Radius.circular(5.0)),
         ),
       );
-    else
-      return SizedBox(
+    } else {
+      return const SizedBox(
         width: 4,
       );
+    }
   }
 
   buildBlueLeftPart(bool isRightBlue) {
-    if(isRightBlue)
+    if(isRightBlue) {
       return Container(
         width: 4,
         decoration: const BoxDecoration(
@@ -215,10 +216,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               bottomRight: Radius.circular(5.0)),
         ),
       );
-    else
-      return SizedBox(
+    } else {
+      return const SizedBox(
         width: 4,
       );
+    }
   }
 
 }

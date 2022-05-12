@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notes/screens/categories_screen.dart';
-import 'package:notes/screens/login_screen.dart';
 import 'package:notes/utils/app_colors.dart';
 import 'package:notes/utils/routes.dart';
 
@@ -18,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 2000), () {
-      Get.offAndToNamed(Routes.CATEGORIES_SCREEN);
+      Get.offAndToNamed(Routes.LOGIN_SCREEN);
     });
   }
 
