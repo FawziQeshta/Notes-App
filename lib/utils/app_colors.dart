@@ -8,5 +8,6 @@ class AppColors {
   static const Color blue = Color(0xFF6A90F2);
   static const Color titleCategory = Color(0xFF111111);
   static const Color line = Color(0xFFD0D0D0);
+  static const Color hintColor = Color(0xFF9391A4);
 
 }

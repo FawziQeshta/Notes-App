@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
 import 'package:notes/custom_widgets/custom_category_notes_item.dart';
+import 'package:notes/screens/create_or_update_note_screen.dart';
 
 import '../utils/app_colors.dart';
+import 'settings_screen.dart';
 
 class CategoryNotesScreen extends StatefulWidget {
   const CategoryNotesScreen({Key? key}) : super(key: key);
@@ -26,7 +28,7 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
           appBar: CustomAppBar(
               title: 'Category Name',
               rightIconPath: 'assets/icons/add.svg',
-              action: null),
+              action: ()=>Get.to(CreateOrUpdateNoteScreen())),
           body: ListView.builder(
             itemBuilder: (context, index) {
               selectedFlag[index] = selectedFlag[index] ?? false;

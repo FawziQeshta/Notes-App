@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:notes/screens/about_app_screen.dart';
 import 'package:notes/screens/categories_screen.dart';
 import 'package:notes/screens/category_notes_screen.dart';
-import 'package:notes/screens/create_note_screen.dart';
+import 'package:notes/screens/create_or_update_category_screen.dart';
 import 'package:notes/screens/login_screen.dart';
 import 'package:notes/screens/profile_screen.dart';
 import 'package:notes/screens/settings_screen.dart';
 import 'package:notes/screens/sign_up_screen.dart';
-import 'package:notes/screens/update_note_screen.dart';
+import 'package:notes/screens/create_or_update_note_screen.dart';
 import 'screens/splash_screen.dart';
 import 'utils/routes.dart';
 
@@ -37,8 +37,8 @@ class _LauncherAppState extends State<LauncherApp> {
           GetPage(name: Routes.CATEGORY_NOTES_SCREEN, page: () => CategoryNotesScreen()),
           GetPage(name: Routes.SETTINGS_SCREEN, page: () => SettingsScreen()),
           GetPage(name: Routes.PROFILE_SCREEN, page: () => ProfileScreen()),
-          GetPage(name: Routes.CREATE_NOTE_SCREEN, page: () => CreateNoteScreen()),
-          GetPage(name: Routes.UPDATE_NOTE_SCREEN, page: () => UpdateNoteScreen()),
+          GetPage(name: Routes.CREATE_OR_UPDATE_NOTE_SCREEN, page: () => CreateOrUpdateCategoryScreen()),
+          GetPage(name: Routes.CREATE_OR_UPDATE_CATEGORY_SCREEN, page: () => CreateOrUpdateNoteScreen()),
           GetPage(name: Routes.ABOUT_APP_SCREEN, page: () => AboutAppScreen()),
         ]
     );

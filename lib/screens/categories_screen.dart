@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:notes/custom_widgets/category_item.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
+import 'package:notes/screens/create_or_update_category_screen.dart';
 import 'package:notes/screens/settings_screen.dart';
 
 import '../utils/app_colors.dart';
@@ -30,8 +31,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         padding: const EdgeInsets.only(top: 25),
       ),
       floatingActionButton:
-      const FloatingActionButton(
-        onPressed: null,
+       FloatingActionButton(
+        onPressed: () => Get.to(CreateOrUpdateCategoryScreen()),
         child: Icon(Icons.add, color: Colors.white,),
       ),
     );
