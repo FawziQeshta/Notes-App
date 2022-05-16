@@ -97,6 +97,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hintStyle: hintStyle,
                               ),
                               style: textStyle,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -107,6 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hintStyle: hintStyle,
                               ),
                               style: textStyle,
+                              keyboardType: TextInputType.text,
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -118,6 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hintStyle: hintStyle,
                               ),
                               style: textStyle,
+                              textInputAction: TextInputAction.next
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -129,6 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hintStyle: hintStyle,
                               ),
                               style: textStyle,
+                              textInputAction: TextInputAction.next
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -155,6 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Container(
                       width: double.infinity,
                       height: 53,
+                      margin: const EdgeInsets.only(bottom: 20),
                       decoration: BoxDecoration(
                           color: AppColors.blue,
                           borderRadius: BorderRadius.circular(50)),

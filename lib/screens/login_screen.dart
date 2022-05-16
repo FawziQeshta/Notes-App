@@ -71,6 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           TextFormField(
+                            keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
                               hintText: 'User Name',
                               hintStyle: TextStyle(
@@ -89,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.black
                             ),
+                            textInputAction: TextInputAction.next
                           ),
                           const SizedBox(
                             height: 30.0,

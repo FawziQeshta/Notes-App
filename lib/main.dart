@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/screens/about_app_screen.dart';
+import 'package:notes/screens/about_course_screen.dart';
 import 'package:notes/screens/categories_screen.dart';
 import 'package:notes/screens/category_notes_screen.dart';
 import 'package:notes/screens/create_or_update_category_screen.dart';
@@ -12,7 +14,9 @@ import 'package:notes/screens/create_or_update_note_screen.dart';
 import 'screens/splash_screen.dart';
 import 'utils/routes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const LauncherApp());
 }
 
@@ -40,6 +44,7 @@ class _LauncherAppState extends State<LauncherApp> {
           GetPage(name: Routes.CREATE_OR_UPDATE_NOTE_SCREEN, page: () => CreateOrUpdateCategoryScreen()),
           GetPage(name: Routes.CREATE_OR_UPDATE_CATEGORY_SCREEN, page: () => CreateOrUpdateNoteScreen()),
           GetPage(name: Routes.ABOUT_APP_SCREEN, page: () => AboutAppScreen()),
+          GetPage(name: Routes.ABOUT_COURSE_SCREEN, page: () => AboutCourseScreen()),
         ]
     );
   }

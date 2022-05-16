@@ -22,7 +22,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(title: 'Categories',
             rightIconPath: 'assets/icons/settings.svg',
-            action: (){Get.to(SettingsScreen());},),
+            action: () => Get.to(const SettingsScreen()),),
       body: ListView.builder(
           itemBuilder: (context, index) {
             return CategoryItem(title: 'Work', description: 'Notes for work...',);
@@ -32,8 +32,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       floatingActionButton:
        FloatingActionButton(
-        onPressed: () => Get.to(CreateOrUpdateCategoryScreen()),
-        child: Icon(Icons.add, color: Colors.white,),
+        onPressed: () => Get.to(const CreateOrUpdateCategoryScreen()),
+        child: const Icon(Icons.add, color: Colors.white,),
       ),
     );
   }

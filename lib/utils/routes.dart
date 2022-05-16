@@ -10,5 +10,6 @@ class Routes {
   static const CREATE_OR_UPDATE_NOTE_SCREEN = "/create_or_update_note_screen";
   static const CREATE_OR_UPDATE_CATEGORY_SCREEN = "/create_or_update_category_screen";
   static const ABOUT_APP_SCREEN = "/about_app_screen";
+  static const ABOUT_COURSE_SCREEN = "/about_course_screen";
 
 }

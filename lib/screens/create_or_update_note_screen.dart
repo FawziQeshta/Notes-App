@@ -36,72 +36,77 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
           action: null),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'New Note',
-              style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.w600,
-                fontFamily:'Nunito',
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'New Note',
+                style: TextStyle(
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.w600,
+                  fontFamily:'Nunito',
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            const Text(
-              'Create note',
-              style: TextStyle(
-                color: AppColors.hintColor,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w300,
-                fontFamily:'Roboto',
+              const SizedBox(
+                height: 10.0,
               ),
-            ),
-            const SizedBox(
-              height: 30.0,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Note Title',
-                hintStyle: hintStyle
+              const Text(
+                'Create note',
+                style: TextStyle(
+                  color: AppColors.hintColor,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w300,
+                  fontFamily:'Roboto',
+                ),
               ),
-              style: textStyle,
-            ),
-            const SizedBox(
-              height: 30.0,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Description',
+              const SizedBox(
+                height: 30.0,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Note Title',
                   hintStyle: hintStyle
+                ),
+                style: textStyle,
               ),
-              style: textStyle,
-            ),
-            const SizedBox(
-              height: 30.0,
-            ),
-            Container(
-              width: double.infinity,
-              height: 53,
-              decoration: BoxDecoration(
-                  color: AppColors.blue,
-                  borderRadius: BorderRadius.circular(50)),
-              child: MaterialButton(
-                onPressed: () {},
-                child: const Text(
-                  'Save',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w500,
+              const SizedBox(
+                height: 30.0,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Description',
+                    hintStyle: hintStyle
+                ),
+                style: textStyle,
+                maxLines: null,
+                textInputAction: TextInputAction.newline,
+                keyboardType: TextInputType.multiline,
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
+              Container(
+                width: double.infinity,
+                height: 53,
+                decoration: BoxDecoration(
+                    color: AppColors.blue,
+                    borderRadius: BorderRadius.circular(50)),
+                child: MaterialButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
 

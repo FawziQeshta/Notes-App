@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../custom_widgets/custom_appbar.dart';
 import '../utils/app_colors.dart';
 
-class AboutAppScreen extends StatelessWidget {
-  const AboutAppScreen({Key? key}) : super(key: key);
+class AboutCourseScreen extends StatelessWidget {
+  const AboutCourseScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: 'About App',
+      appBar: CustomAppBar(title: 'About Course',
         rightIconPath: '',
         action: null,),
       body: const SingleChildScrollView(

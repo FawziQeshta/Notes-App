@@ -206,6 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: AppColors.titleCategory),
       controller: txtController,
       keyboardType: keyboardType,
+      textInputAction: TextInputAction.next
     );
   }
 

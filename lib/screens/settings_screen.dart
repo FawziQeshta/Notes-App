@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:notes/screens/about_app_screen.dart';
+import 'package:notes/screens/about_course_screen.dart';
 import 'package:notes/screens/profile_screen.dart';
 
 import '../custom_widgets/custom_appbar.dart';
@@ -81,15 +83,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               buildSettingItem('assets/icons/identity.svg',
                   'Profile', 'Update your data…',
-                  (){Get.to(const ProfileScreen());}, true),
+                  () => Get.to(const ProfileScreen()), true),
 
               buildSettingItem('assets/icons/device_information.svg',
                   'About App', 'What is notes app?',
-                  null, false),
+                  () => Get.to(const AboutAppScreen()), false),
 
               buildSettingItem('assets/icons/info.svg',
                   'About course', 'Describe the course in brief',
-                  null, true),
+                  () => Get.to(const AboutCourseScreen()) , true),
 
               buildSettingItem('assets/icons/power.svg',
                   'Logout', 'Waiting your return…',
