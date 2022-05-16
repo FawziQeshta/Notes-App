@@ -25,7 +25,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         action: null,),
       body: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height-86),
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
           child: Column(
             children: [
               Container(

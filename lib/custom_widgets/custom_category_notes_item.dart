@@ -34,7 +34,7 @@ class _CustomCategoryNotesItemState extends State<CustomCategoryNotesItem> {
           children: [
             Container(
               width: 4,
-              margin: EdgeInsets.only(right: 16),
+              margin: const EdgeInsets.only(right: 16),
               decoration: const BoxDecoration(
                 color: AppColors.blue,
                 shape: BoxShape.rectangle,
@@ -61,7 +61,7 @@ class _CustomCategoryNotesItemState extends State<CustomCategoryNotesItem> {
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    SizedBox(height: 4,),
+                    const SizedBox(height: 4,),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -103,7 +103,7 @@ class _CustomCategoryNotesItemState extends State<CustomCategoryNotesItem> {
               : SvgPicture.asset('assets/icons/check_inactive.svg',)
       );
     } else {
-      return SizedBox(width: 16,);
+      return const SizedBox(width: 16,);
     }
   }
 

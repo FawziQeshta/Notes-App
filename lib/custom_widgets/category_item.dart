@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:notes/models/category.dart';
 import 'package:notes/screens/category_notes_screen.dart';
 import 'package:notes/screens/create_or_update_note_screen.dart';
 
 import '../utils/app_colors.dart';
 
 class CategoryItem extends StatelessWidget {
-  String title;
-  String description;
+  Category category;
 
-  CategoryItem({required this.title, required this.description});
+  CategoryItem({Key? key, required this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(CategoryNotesScreen()),
+      onTap: () => Get.to(CategoryNotesScreen(categoryId: category.id,)),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
@@ -33,9 +33,9 @@ class CategoryItem extends StatelessWidget {
                   color: AppColors.blue,
                   shape: BoxShape.circle
               ),
-              child: const Text(
-                'W',
-                style: TextStyle(
+              child: Text(
+                category.title[0].toUpperCase(),
+                style: const TextStyle(
                     fontSize: 22,
                     fontFamily: 'Quicksand',
                     fontWeight: FontWeight.w500,
@@ -49,7 +49,7 @@ class CategoryItem extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      title,
+                      category.title,
                       maxLines: 1,
                       style: const TextStyle(
                           fontSize: 13,
@@ -62,7 +62,7 @@ class CategoryItem extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      description,
+                      category.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -82,7 +82,7 @@ class CategoryItem extends StatelessWidget {
             ),
             Container(
               width: 25,
-              padding: EdgeInsets.symmetric(vertical: 11),
+              padding: const EdgeInsets.symmetric(vertical: 11),
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 color: AppColors.blue,
@@ -92,7 +92,7 @@ class CategoryItem extends StatelessWidget {
                     bottomRight: Radius.circular(5.0)),
               ),
               child: IconButton(
-                onPressed: () => Get.to(CreateOrUpdateNoteScreen()),
+                onPressed: () => Get.to(const CreateOrUpdateNoteScreen()),
                 icon: SvgPicture.asset('assets/icons/edit.svg',),
               ),
             ),

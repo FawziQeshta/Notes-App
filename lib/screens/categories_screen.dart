@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/category_controller.dart';
 import 'package:notes/custom_widgets/category_item.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
 import 'package:notes/screens/create_or_update_category_screen.dart';
 import 'package:notes/screens/settings_screen.dart';
 
+import '../models/category.dart';
 import '../utils/app_colors.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -16,6 +18,9 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+
+  CategoryController controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,12 +28,20 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       appBar: CustomAppBar(title: 'Categories',
             rightIconPath: 'assets/icons/settings.svg',
             action: () => Get.to(const SettingsScreen()),),
-      body: ListView.builder(
-          itemBuilder: (context, index) {
-            return CategoryItem(title: 'Work', description: 'Notes for work...',);
+      body: RefreshIndicator(
+        onRefresh: () => controller.fetchData(),
+        child: controller.obx((data) {
+          var list = data as List<Category>;
+          return ListView.builder(
+              itemBuilder: (context, index) {
+            return CategoryItem(category: list[index]);
           },
-        itemCount: 5,
-        padding: const EdgeInsets.only(top: 25),
+          itemCount: list.length,
+          padding: const EdgeInsets.only(top: 25));
+        },
+          onLoading: const Center(child: CircularProgressIndicator()),
+          onError: (e) => Center(child: Text(e!)),
+        ),
       ),
       floatingActionButton:
        FloatingActionButton(

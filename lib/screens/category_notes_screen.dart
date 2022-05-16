@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
+import 'package:notes/custom_widgets/custom_button.dart';
 import 'package:notes/custom_widgets/custom_category_notes_item.dart';
 import 'package:notes/screens/create_or_update_note_screen.dart';
 
@@ -9,7 +10,10 @@ import '../utils/app_colors.dart';
 import 'settings_screen.dart';
 
 class CategoryNotesScreen extends StatefulWidget {
-  const CategoryNotesScreen({Key? key}) : super(key: key);
+
+  String categoryId;
+
+  CategoryNotesScreen({required this.categoryId, Key? key}) : super(key: key);
 
   @override
   State<CategoryNotesScreen> createState() => _CategoryNotesScreenState();
@@ -28,7 +32,7 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
           appBar: CustomAppBar(
               title: 'Category Name',
               rightIconPath: 'assets/icons/add.svg',
-              action: ()=>Get.to(CreateOrUpdateNoteScreen())),
+              action: ()=>Get.to(const CreateOrUpdateNoteScreen())),
           body: ListView.builder(
             itemBuilder: (context, index) {
               selectedFlag[index] = selectedFlag[index] ?? false;
@@ -47,7 +51,9 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
             },
             itemCount: 5,
             padding: const EdgeInsets.only(top: 25),
-          )),
+          ),
+        bottomNavigationBar: buildActionButtons(),
+      ),
     );
   }
 
@@ -78,6 +84,23 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
       return false;
     } else {
       return true;
+    }
+  }
+
+  buildActionButtons() {
+    if (isSelectionMode) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(flex: 1, child: CustomButton(title: 'Update', icon: Icons.edit, onPressed: () {})),
+            const SizedBox(width: 8,),
+            Expanded(flex: 1, child: CustomButton(title: 'Delete', icon: Icons.delete, onPressed: () {})),
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox(height: 0, width: 0,);
     }
   }
 
