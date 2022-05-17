@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:notes/models/category_note.dart';
 
 import '../utils/app_colors.dart';
 
 class CustomCategoryNotesItem extends StatefulWidget {
-  String title;
-  String description;
+  CategoryNote categoryNote;
   bool isSelectionMode;
   bool isSelected;
 
   CustomCategoryNotesItem({
-    required this.title, required this.description
+    required this.categoryNote
       , required this.isSelectionMode, required this.isSelected});
 
   @override
@@ -52,7 +52,7 @@ class _CustomCategoryNotesItemState extends State<CustomCategoryNotesItem> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.title,
+                        widget.categoryNote.title,
                         style: const TextStyle(
                             fontSize: 13,
                             fontFamily: 'Quicksand',
@@ -65,7 +65,7 @@ class _CustomCategoryNotesItemState extends State<CustomCategoryNotesItem> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.description,
+                        widget.categoryNote.description,
                         style: const TextStyle(
                             fontSize: 12,
                             fontFamily: 'Quicksand',

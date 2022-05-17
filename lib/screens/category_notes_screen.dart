@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/category_note_controller.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
-import 'package:notes/custom_widgets/custom_button.dart';
 import 'package:notes/custom_widgets/custom_category_notes_item.dart';
+import 'package:notes/models/category_note.dart';
 import 'package:notes/screens/create_or_update_note_screen.dart';
-
-import '../utils/app_colors.dart';
-import 'settings_screen.dart';
 
 class CategoryNotesScreen extends StatefulWidget {
 
@@ -23,6 +20,14 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
   Map<int, bool> selectedFlag = {};
   bool isSelectionMode = false;
 
+  CategoryNoteController controller = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchData(categoryId: widget.categoryId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -33,26 +38,33 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
               title: 'Category Name',
               rightIconPath: 'assets/icons/add.svg',
               action: ()=>Get.to(const CreateOrUpdateNoteScreen())),
-          body: ListView.builder(
-            itemBuilder: (context, index) {
-              selectedFlag[index] = selectedFlag[index] ?? false;
-              bool isSelected = selectedFlag[index]!;
+          body: RefreshIndicator(
+            onRefresh: () => controller.fetchData(categoryId: widget.categoryId),
+            child: controller.obx((data) {
+              var list = data as List<CategoryNote>;
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  selectedFlag[index] = selectedFlag[index] ?? false;
+                  bool isSelected = selectedFlag[index]!;
 
-              return GestureDetector(
-                onLongPress: () => onLongPress(isSelected, index),
-                onTap: () => onTap(isSelected, index),
-                child: CustomCategoryNotesItem(
-                    title: 'Note Title',
-                    description:
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry, Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                    isSelectionMode: isSelectionMode,
-                    isSelected: isSelected),
+                  return GestureDetector(
+                    onLongPress: () => onLongPress(isSelected, index),
+                    onTap: () => onTap(isSelected, index),
+                    child: CustomCategoryNotesItem(
+                        categoryNote: list[index],
+                        isSelectionMode: isSelectionMode,
+                        isSelected: isSelected),
+                  );
+                },
+                itemCount: list.length,
+                padding: const EdgeInsets.only(top: 25),
               );
             },
-            itemCount: 5,
-            padding: const EdgeInsets.only(top: 25),
+              onLoading: const Center(child: CircularProgressIndicator()),
+              onError: (e) => Center(child: Text(e!)),
+            ),
           ),
-        bottomNavigationBar: buildActionButtons(),
+        floatingActionButton: _buildFABButton(),
       ),
     );
   }
@@ -87,21 +99,41 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
     }
   }
 
-  buildActionButtons() {
+  Widget? _buildFABButton() {
     if (isSelectionMode) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Expanded(flex: 1, child: CustomButton(title: 'Update', icon: Icons.edit, onPressed: () {})),
-            const SizedBox(width: 8,),
-            Expanded(flex: 1, child: CustomButton(title: 'Delete', icon: Icons.delete, onPressed: () {})),
-          ],
-        ),
+      bool isFalseAvailable = selectedFlag.containsValue(false);  // check if all item is not selected
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: null,
+            child: const Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 10,),
+          FloatingActionButton(
+            onPressed: _selectAll,
+            child: Icon(
+              isFalseAvailable ? Icons.done_all : Icons.remove_done,
+            ),
+          ),
+        ],
       );
     } else {
-      return const SizedBox(height: 0, width: 0,);
+      return null;
     }
+  }
+
+  void _selectAll() {
+    bool isFalseAvailable = selectedFlag.containsValue(false);
+    // If false will be available then it will select all the checkbox
+    // If there will be no false then it will de-select all
+    selectedFlag.updateAll((key, value) => isFalseAvailable);
+    setState(() {
+      isSelectionMode = selectedFlag.containsValue(true);
+    });
   }
 
 }
