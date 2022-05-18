@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:notes/bindings/profile_binding.dart';
 import 'package:notes/controllers/category_controller.dart';
 import 'package:notes/custom_widgets/category_item.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
@@ -27,7 +28,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(title: 'Categories',
             rightIconPath: 'assets/icons/settings.svg',
-            action: () => Get.to(const SettingsScreen()),),
+            action: () => Get.to(const SettingsScreen(), binding: ProfileBinding()),),
       body: RefreshIndicator(
         onRefresh: () => controller.fetchData(),
         child: controller.obx((data) {

@@ -18,6 +18,7 @@ class CategoryNotesScreen extends StatefulWidget {
 
 class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
   Map<int, bool> selectedFlag = {};
+  List<CategoryNote> listNotes = [];
   bool isSelectionMode = false;
 
   CategoryNoteController controller = Get.find();
@@ -41,7 +42,7 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
           body: RefreshIndicator(
             onRefresh: () => controller.fetchData(categoryId: widget.categoryId),
             child: controller.obx((data) {
-              var list = data as List<CategoryNote>;
+              listNotes = data as List<CategoryNote>;
               return ListView.builder(
                 itemBuilder: (context, index) {
                   selectedFlag[index] = selectedFlag[index] ?? false;
@@ -51,12 +52,12 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
                     onLongPress: () => onLongPress(isSelected, index),
                     onTap: () => onTap(isSelected, index),
                     child: CustomCategoryNotesItem(
-                        categoryNote: list[index],
+                        categoryNote: listNotes[index],
                         isSelectionMode: isSelectionMode,
                         isSelected: isSelected),
                   );
                 },
-                itemCount: list.length,
+                itemCount: listNotes.length,
                 padding: const EdgeInsets.only(top: 25),
               );
             },
@@ -102,17 +103,25 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
   Widget? _buildFABButton() {
     if (isSelectionMode) {
       bool isFalseAvailable = selectedFlag.containsValue(false);  // check if all item is not selected
-      return Row(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: null,
+            onPressed: () => deleteNote(),
             child: const Icon(
               Icons.delete,
               color: Colors.white,
             ),
           ),
-          const SizedBox(width: 10,),
+          const SizedBox(height: 10,),
+          FloatingActionButton(
+            onPressed: () => changeStatusNote(),
+            child: const Icon(
+              Icons.done_outline,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 10,),
           FloatingActionButton(
             onPressed: _selectAll,
             child: Icon(
@@ -134,6 +143,29 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
     setState(() {
       isSelectionMode = selectedFlag.containsValue(true);
     });
+  }
+
+  void changeStatusNote() {
+    selectedFlag.forEach((key, value) {
+        if(value) {
+          controller.changeStatusNote(note: listNotes[key]);
+        }
+    });
+    _refreshData();
+  }
+
+  void deleteNote() {
+    selectedFlag.forEach((key, value) {
+      if(value) {
+        controller.deleteNote(note: listNotes[key]);
+      }
+    });
+    _refreshData();
+  }
+
+  void _refreshData() {
+    controller.fetchData(categoryId: widget.categoryId);
+    _onBackPressed();
   }
 
 }
