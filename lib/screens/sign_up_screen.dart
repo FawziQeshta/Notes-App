@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:notes/screens/categories_screen.dart';
+import 'package:notes/controllers/auth_controller.dart';
 import 'package:notes/utils/app_colors.dart';
-
-import '../custom_widgets/custom_appbar.dart';
-import '../utils/routes.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -14,20 +11,23 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  var firstNameController = TextEditingController();
+  var lastNameController = TextEditingController();
+  var phoneController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
 
-  var hintStyle =  const TextStyle(
+  var hintStyle = const TextStyle(
       fontSize: 20.0,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w300,
-      color: AppColors.hintColor
-  );
+      color: AppColors.hintColor);
 
-  var textStyle =  const TextStyle(
-    fontSize: 20.0,
-    fontFamily: 'Roboto',
-    fontWeight: FontWeight.w400,
-    color: AppColors.black
-  );
+  var textStyle = const TextStyle(
+      fontSize: 20.0,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      color: AppColors.black);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, top: 20),
-              child: IconButton(onPressed: ()=> Get.back(),
+              child: IconButton(
+                  onPressed: () => Get.back(),
                   icon: const Icon(Icons.arrow_back_ios)),
             ),
             Padding(
@@ -98,7 +99,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               style: textStyle,
                               keyboardType: TextInputType.text,
-                              textInputAction: TextInputAction.next
+                              textInputAction: TextInputAction.next,
+                              controller: firstNameController,
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -110,6 +112,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               style: textStyle,
                               keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              controller: lastNameController,
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -121,7 +125,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hintStyle: hintStyle,
                               ),
                               style: textStyle,
-                              textInputAction: TextInputAction.next
+                              textInputAction: TextInputAction.next,
+                              controller: emailController,
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -133,7 +138,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hintStyle: hintStyle,
                               ),
                               style: textStyle,
-                              textInputAction: TextInputAction.next
+                              textInputAction: TextInputAction.next,
+                              controller: phoneController,
                             ),
                             const SizedBox(
                               height: 30.0,
@@ -149,6 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 hintStyle: hintStyle,
                               ),
                               style: textStyle,
+                              controller: passwordController,
                             ),
                           ],
                         ),
@@ -158,7 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 30.0,
                     ),
                     Container(
-                      width: double.infinity,
+                      width: MediaQuery.of(context).size.width,
                       height: 53,
                       margin: const EdgeInsets.only(bottom: 20),
                       decoration: BoxDecoration(
@@ -166,11 +173,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderRadius: BorderRadius.circular(50)),
                       child: MaterialButton(
                         onPressed: () {
-                          Get.offAndToNamed(Routes.CATEGORIES_SCREEN);
+                          AuthController.instance.register(
+                              firstNameController.text.trim(),
+                              lastNameController.text.trim(),
+                              emailController.text.trim(),
+                              phoneController.text.trim(),
+                              passwordController.text.trim());
                         },
                         child: const Text(
                           'Sign Up',
-                          style: TextStyle(fontSize: 20.0,
+                          style: TextStyle(
+                              fontSize: 20.0,
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w500,
                               color: Colors.white),

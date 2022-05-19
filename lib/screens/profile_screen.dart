@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/auth_controller.dart';
 import 'package:notes/controllers/profile_controller.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
+import 'package:notes/models/user_note.dart';
 
 import '../utils/app_colors.dart';
 
@@ -16,6 +18,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ProfileController controller = Get.find();
 
   @override
+  void initState() {
+    super.initState();
+    AuthController.instance.getUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,88 +33,96 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Column(
             children: [
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                elevation: 3,
-                margin: const EdgeInsets.only(bottom: 15),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      width: 55,
-                      height: 55,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                          color: AppColors.blue, shape: BoxShape.circle),
-                      child: const Text(
-                        'F',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'Helvetica Neue',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
+              AuthController.instance.obx((data) {
+                var user = data as UserNote;
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  elevation: 3,
+                  margin: const EdgeInsets.only(bottom: 15),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
+                        width: 55,
+                        height: 55,
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                            color: AppColors.blue, shape: BoxShape.circle),
+                        child: Text(
+                          user.name[0].toUpperCase(),
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Helvetica Neue',
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        children: const [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Fawzi Qeshta',
-                              maxLines: 1,
-                              style: const TextStyle(
-                                  fontSize: 13,
-                                  fontFamily: 'Quicksand',
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.titleCategory),
-                              textAlign: TextAlign.start,
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                user.name,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: 'Quicksand',
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.titleCategory),
+                                textAlign: TextAlign.start,
+                              ),
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'fawzi.qeshta@gmail.com',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: 'Quicksand',
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.lightGray),
-                              textAlign: TextAlign.start,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                user.email,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: 'Quicksand',
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.lightGray),
+                                textAlign: TextAlign.start,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                );
+              }),
+              controller.obx(
+                (data) {
+                  var documentsCount = data as List<int>;
+                  return Row(
+                    children: [
+                      buildBoxNumbers('Categories', documentsCount[0]),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      buildBoxNumbers('Done Notes', documentsCount[1]),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      buildBoxNumbers('Waiting Notes', documentsCount[2]),
+                    ],
+                  );
+                },
+                onLoading: const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                  ),
                 ),
               ),
-              controller.obx((data) {
-                var documentsCount = data as List<int>;
-                return Row(
-                  children: [
-                    buildBoxNumbers('Categories', documentsCount[0]),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    buildBoxNumbers('Done Notes', documentsCount[1]),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    buildBoxNumbers('Waiting Notes', documentsCount[2]),
-                  ],
-                );
-              },
-                  onLoading: const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 3,))),
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
@@ -152,12 +168,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: double.infinity, height: 46),
                 child: ElevatedButton(
                   onPressed: () {},
-                  child: const Text('Save',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white)),
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
                     primary: AppColors.blue,
                     shape: RoundedRectangleBorder(

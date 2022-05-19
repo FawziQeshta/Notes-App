@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/auth_controller.dart';
 import 'package:notes/utils/app_colors.dart';
 import 'package:notes/utils/routes.dart';
 
@@ -15,8 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      Get.offAndToNamed(Routes.LOGIN_SCREEN);
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      AuthController.instance.checkCurrentUser();
     });
   }
 

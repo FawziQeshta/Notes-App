@@ -1,6 +1,7 @@
 class Constants {
   static const String CATEGORIES_COLLECTION_KEY = "categories";
   static const String CATEGORY_NOTE_COLLECTION_KEY = "category_notes";
+  static const String USERS_COLLECTION_KEY = "users";
 
   static const int NOTE_DONE_STATUS = 1;
   static const int NOTE_WAITING_STATS = 0;

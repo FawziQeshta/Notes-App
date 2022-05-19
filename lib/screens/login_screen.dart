@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/auth_controller.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
 import 'package:notes/screens/categories_screen.dart';
 import 'package:notes/utils/app_colors.dart';
@@ -14,6 +15,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: BoxDecoration(
                         boxShadow:  [
                           BoxShadow(
-                              offset: Offset(0, 5),
+                              offset: const Offset(0, 5),
                               blurRadius: 10,
                               color: Colors.grey.withOpacity(0.8))
                         ],
@@ -73,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
-                              hintText: 'User Name',
+                              hintText: 'Email',
                               hintStyle: TextStyle(
                                 fontSize: 18.0,
                                 fontFamily: 'Roboto',
@@ -81,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: AppColors.hintColor
                               ),
                               prefixIcon: Icon(
-                                Icons.person,
+                                Icons.email,
                               ),
                             ),
                             style: const TextStyle(
@@ -90,7 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.black
                             ),
-                            textInputAction: TextInputAction.next
+                            textInputAction: TextInputAction.next,
+                            controller: emailController,
                           ),
                           const SizedBox(
                             height: 30.0,
@@ -119,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.black
                             ),
+                            controller: passwordController,
                           ),
                         ],
                       ),
@@ -135,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(50)),
                     child: MaterialButton(
                       onPressed: () {
-                        Get.offAndToNamed(Routes.CATEGORIES_SCREEN);
+                        AuthController.instance.login(emailController.text.trim(), passwordController.text.trim());
                       },
                       child: const Text(
                         'Login',
@@ -165,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Get.to(SignUpScreen());
+                          Get.to(const SignUpScreen());
                         },
                         child: const Text(
                           'Sign Up',

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/auth_controller.dart';
+import 'package:notes/models/user_note.dart';
 import 'package:notes/screens/about_app_screen.dart';
 import 'package:notes/screens/about_course_screen.dart';
 import 'package:notes/screens/profile_screen.dart';
@@ -16,6 +18,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    AuthController.instance.getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,94 +35,97 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 11.0, right: 11.0, bottom: 8, top: 11.0),
-                width: 70,
-                height: 70,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                    color: AppColors.blue,
-                    shape: BoxShape.circle
-                ),
-                child: const Text(
-                  'F',
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontFamily: 'Helvetica Neue',
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white),
-                ),
-              ),
-              const Text(
-                'Fawzi Qeshta',
-                maxLines: 1,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontFamily: 'Quicksand',
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.titleCategory),
-                textAlign: TextAlign.start,
-              ),
-              const Text(
-                'fawzi.qeshta@gmail.com',
-                maxLines: 1,
-                style: TextStyle(
-                    fontSize: 13,
-                    fontFamily: 'Quicksand',
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.lightGray),
-                textAlign: TextAlign.start,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10, left: 45, right: 45, bottom: 25),
-                child: Divider(
-                  color: AppColors.line,
-                  height: 2.5,
-                  thickness: 1,
-                  // indent: 50,
-                  endIndent: 0,
-                ),
-              ),
-
-              buildSettingItem('assets/icons/language.svg',
-                  'Language', 'Selected language: EN',
-                  null, false),
-
-              buildSettingItem('assets/icons/identity.svg',
-                  'Profile', 'Update your data…',
-                  () => Get.to(const ProfileScreen()), true),
-
-              buildSettingItem('assets/icons/device_information.svg',
-                  'About App', 'What is notes app?',
-                  () => Get.to(const AboutAppScreen()), false),
-
-              buildSettingItem('assets/icons/info.svg',
-                  'About course', 'Describe the course in brief',
-                  () => Get.to(const AboutCourseScreen()) , true),
-
-              buildSettingItem('assets/icons/power.svg',
-                  'Logout', 'Waiting your return…',
-                  null, false),
-
-              const Expanded(
-                flex: 1,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
+          child: AuthController.instance.obx((data) {
+            var user = data as UserNote;
+            return Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 11.0, right: 11.0, bottom: 8, top: 11.0),
+                  width: 70,
+                  height: 70,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                      color: AppColors.blue,
+                      shape: BoxShape.circle
+                  ),
                   child: Text(
-                    'IUG - Notes App',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w300,
-                        color: AppColors.darkGray),
-                    textAlign: TextAlign.center,
+                    user.name[0].toUpperCase(),
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontFamily: 'Helvetica Neue',
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white),
                   ),
                 ),
-              ),
-            ],
-          ),
+                Text(
+                  user.name,
+                  maxLines: 1,
+                  style: const TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'Quicksand',
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.titleCategory),
+                  textAlign: TextAlign.start,
+                ),
+                Text(
+                  user.email,
+                  maxLines: 1,
+                  style: const TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'Quicksand',
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.lightGray),
+                  textAlign: TextAlign.start,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10, left: 45, right: 45, bottom: 25),
+                  child: Divider(
+                    color: AppColors.line,
+                    height: 2.5,
+                    thickness: 1,
+                    // indent: 50,
+                    endIndent: 0,
+                  ),
+                ),
+
+                buildSettingItem('assets/icons/language.svg',
+                    'Language', 'Selected language: EN',
+                    null, false),
+
+                buildSettingItem('assets/icons/identity.svg',
+                    'Profile', 'Update your data…',
+                        () => Get.to(const ProfileScreen()), true),
+
+                buildSettingItem('assets/icons/device_information.svg',
+                    'About App', 'What is notes app?',
+                        () => Get.to(const AboutAppScreen()), false),
+
+                buildSettingItem('assets/icons/info.svg',
+                    'About course', 'Describe the course in brief',
+                        () => Get.to(const AboutCourseScreen()) , true),
+
+                buildSettingItem('assets/icons/power.svg',
+                    'Logout', 'Waiting your return…',
+                        (){AuthController.instance.logOut();} , false),
+
+                const Expanded(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      'IUG - Notes App',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w300,
+                          color: AppColors.darkGray),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );

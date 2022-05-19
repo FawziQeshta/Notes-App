@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notes/bindings/auth_binding.dart';
 import 'package:notes/bindings/category_binding.dart';
 import 'package:notes/bindings/profile_binding.dart';
 import 'package:notes/screens/about_app_screen.dart';
@@ -36,10 +37,10 @@ class _LauncherAppState extends State<LauncherApp> {
       debugShowCheckedModeBanner: false,
         initialRoute: Routes.SPLASH_SCREEN,
         getPages: [
-          GetPage(name: Routes.SPLASH_SCREEN, page: () => const SplashScreen()),
+          GetPage(name: Routes.SPLASH_SCREEN, page: () => const SplashScreen(), binding: AuthBinding()),
           GetPage(name: Routes.LOGIN_SCREEN, page: () => const LoginScreen()),
           GetPage(name: Routes.SIGN_UP_SCREEN, page: () => const SignUpScreen()),
-          GetPage(name: Routes.CATEGORIES_SCREEN, page: () => const CategoriesScreen(), binding: CategoryBinding()),
+          GetPage(name: Routes.CATEGORIES_SCREEN, page: () => const CategoriesScreen()),
           GetPage(name: Routes.CATEGORY_NOTES_SCREEN, page: () => CategoryNotesScreen(categoryId: '',)),
           GetPage(name: Routes.SETTINGS_SCREEN, page: () => const SettingsScreen()),
           GetPage(name: Routes.PROFILE_SCREEN, page: () => const ProfileScreen()),
