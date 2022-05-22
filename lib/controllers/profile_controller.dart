@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/auth_controller.dart';
 import 'package:notes/utils/constants.dart';
 
 class ProfileController extends GetxController with StateMixin<List<dynamic>> {
@@ -16,10 +17,13 @@ class ProfileController extends GetxController with StateMixin<List<dynamic>> {
   getDocumentsCount() async {
     change(null, status: RxStatus.loading());
 
-    QuerySnapshot categoriesCollection = await db.collection(Constants.CATEGORIES_COLLECTION_KEY).get();
+    QuerySnapshot categoriesCollection = await db.collection(Constants.CATEGORIES_COLLECTION_KEY)
+        .where(Constants.USER_ID_KEY, isEqualTo: AuthController.instance.auth.currentUser?.uid)
+        .get();
     countDocuments.add(categoriesCollection.size);
 
     QuerySnapshot doneCollection = await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
+        .where(Constants.USER_ID_KEY, isEqualTo: AuthController.instance.auth.currentUser?.uid)
         .where(Constants.NOTE_STATUS_KEY, isEqualTo: Constants.NOTE_DONE_STATUS)
         .where(Constants.NOTE_IS_DELETED_KEY, isEqualTo: Constants.NOTE_NOT_DELETED)
         .get();
@@ -27,6 +31,7 @@ class ProfileController extends GetxController with StateMixin<List<dynamic>> {
     countDocuments.add(doneCollection.size);
 
     QuerySnapshot waitingCollection = await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
+        .where(Constants.USER_ID_KEY, isEqualTo: AuthController.instance.auth.currentUser?.uid)
         .where(Constants.NOTE_STATUS_KEY, isEqualTo: Constants.NOTE_WAITING_STATS)
         .where(Constants.NOTE_IS_DELETED_KEY, isEqualTo: Constants.NOTE_NOT_DELETED)
         .get();

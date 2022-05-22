@@ -35,7 +35,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           var list = data as List<Category>;
           return ListView.builder(
               itemBuilder: (context, index) {
-            return CategoryItem(category: list[index]);
+            return CategoryItem(controller: controller, category: list[index]);
           },
           itemCount: list.length,
           padding: const EdgeInsets.only(top: 25));
@@ -46,7 +46,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       floatingActionButton:
        FloatingActionButton(
-        onPressed: () => Get.to(const CreateOrUpdateCategoryScreen()),
+        onPressed: () => Get.to(CreateOrUpdateCategoryScreen(isUpdateCreate: false, categoryUpdate: null,)),
         child: const Icon(Icons.add, color: Colors.white,),
       ),
     );

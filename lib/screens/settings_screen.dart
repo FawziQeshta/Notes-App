@@ -49,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       shape: BoxShape.circle
                   ),
                   child: Text(
-                    user.name[0].toUpperCase(),
+                    user.fullName[0].toUpperCase(),
                     style: const TextStyle(
                         fontSize: 24,
                         fontFamily: 'Helvetica Neue',
@@ -58,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 Text(
-                  user.name,
+                  user.fullName,
                   maxLines: 1,
                   style: const TextStyle(
                       fontSize: 15,

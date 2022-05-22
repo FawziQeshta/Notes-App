@@ -157,7 +157,7 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
   void deleteNote() {
     selectedFlag.forEach((key, value) {
       if(value) {
-        controller.deleteNote(note: listNotes[key]);
+        controller.softDeleteNote(note: listNotes[key]);
       }
     });
     _refreshData();

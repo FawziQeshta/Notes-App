@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/category_controller.dart';
 import 'package:notes/models/category.dart';
 import 'package:notes/screens/category_notes_screen.dart';
-import 'package:notes/screens/create_or_update_note_screen.dart';
+import 'package:notes/screens/create_or_update_category_screen.dart';
 
 import '../utils/app_colors.dart';
 
 class CategoryItem extends StatelessWidget {
+  CategoryController controller;
   Category category;
 
-  CategoryItem({Key? key, required this.category}) : super(key: key);
+  CategoryItem({Key? key, required this.controller, required this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,7 @@ class CategoryItem extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: null,
+              onPressed: () => controller.deleteCategory(categoryId: category.id),
               icon: SvgPicture.asset('assets/icons/delete.svg',),
             ),
             Container(
@@ -92,7 +94,7 @@ class CategoryItem extends StatelessWidget {
                     bottomRight: Radius.circular(5.0)),
               ),
               child: IconButton(
-                onPressed: () => Get.to(const CreateOrUpdateNoteScreen()),
+                onPressed: () => Get.to(CreateOrUpdateCategoryScreen(isUpdateCreate: true, categoryUpdate: category,)),
                 icon: SvgPicture.asset('assets/icons/edit.svg',),
               ),
             ),

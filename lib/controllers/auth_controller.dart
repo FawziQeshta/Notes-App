@@ -8,6 +8,7 @@ import 'package:notes/models/user_note.dart';
 import 'package:notes/screens/categories_screen.dart';
 import 'package:notes/screens/login_screen.dart';
 import 'package:notes/utils/constants.dart';
+import 'package:notes/utils/utilities.dart';
 
 class AuthController extends GetxController with StateMixin<dynamic> {
   static AuthController instance = Get.find();
@@ -16,14 +17,14 @@ class AuthController extends GetxController with StateMixin<dynamic> {
   void register(String firstName, String lastName, String email, String phone,
       String password) async {
     try {
-      _showDialog('جاري انشاء الحساب، الرجاء الانتظار');
+      Utilities.showDialog('جاري انشاء الحساب، الرجاء الانتظار');
 
       if (firstName.isEmpty ||
           lastName.isEmpty ||
           email.isEmpty ||
           phone.isEmpty ||
           password.isEmpty) {
-        _closeDialog();
+        Utilities.closeDialog();
         Get.snackbar(
             "Register Error!", "All fields are required Please fill in them");
         return;
@@ -35,7 +36,7 @@ class AuthController extends GetxController with StateMixin<dynamic> {
         saveUserInCollection(firstName, lastName, email, phone, password);
       });
     } catch (e) {
-      _closeDialog();
+      Utilities.closeDialog();
       Get.snackbar("About User", "User message",
           backgroundColor: Colors.redAccent,
           snackPosition: SnackPosition.BOTTOM,
@@ -63,17 +64,36 @@ class AuthController extends GetxController with StateMixin<dynamic> {
         .collection(Constants.USERS_COLLECTION_KEY)
         .add(userMap)
         .then((DocumentReference doc) {
-      _closeDialog();
-      Get.offAll(() => const CategoriesScreen());
+      Utilities.closeDialog();
+      Get.offAll(() => const CategoriesScreen(), binding: CategoryBinding());
+    });
+  }
+
+  void updateUserInCollection(String id, String firstName, String lastName,
+      String email, String phone, String password) async {
+    Map<String, dynamic> userMap = {
+      'uid': auth.currentUser?.uid,
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'phone': phone,
+      'password': password,
+    };
+
+    var collection =
+        FirebaseFirestore.instance.collection(Constants.USERS_COLLECTION_KEY);
+    await collection.doc(id).update(userMap).then((value) {
+      Utilities.closeDialog();
+      Get.offAll(() => const CategoriesScreen(), binding: CategoryBinding());
     });
   }
 
   void login(String email, String password) async {
     try {
-      _showDialog('...جاري تسجيل الدخول');
+      Utilities.showDialog('...جاري تسجيل الدخول');
 
       if (email.isEmpty || password.isEmpty) {
-        _closeDialog();
+        Utilities.closeDialog();
         Get.snackbar(
             "Login Error!", "All fields are required Please fill in them");
         return;
@@ -82,16 +102,52 @@ class AuthController extends GetxController with StateMixin<dynamic> {
       await auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
-        _closeDialog();
+        Utilities.closeDialog();
         Get.offAll(() => const CategoriesScreen(), binding: CategoryBinding());
       });
     } catch (e) {
-      _closeDialog();
+      Utilities.closeDialog();
       Get.snackbar("About Login", "Login message",
           backgroundColor: Colors.redAccent,
           snackPosition: SnackPosition.BOTTOM,
           titleText: const Text(
             "Login failed",
+            style: TextStyle(color: Colors.white),
+          ),
+          messageText:
+              Text(e.toString(), style: const TextStyle(color: Colors.white)));
+    }
+  }
+
+  void updateUserData(String id, String firstName, String lastName,
+      String email, String phone, String password) async {
+    try {
+      Utilities.showDialog('جاري تعديل البيانات، الرجاء الانتظار');
+
+      if (firstName.isEmpty ||
+          lastName.isEmpty ||
+          email.isEmpty ||
+          phone.isEmpty) {
+        Utilities.closeDialog();
+        Get.snackbar(
+            "Update Error!", "All fields are required Please fill in them");
+        return;
+      }
+
+      EmailAuthProvider.credential(email: "${auth.currentUser?.email}", password: password);
+      GoogleAuthProvider.credential(idToken: '', accessToken: '');
+
+      await auth.currentUser?.updateEmail(email).then((value) {
+        updateUserInCollection(id, firstName, lastName, email, phone, password);
+      });
+
+    } catch (e) {
+      Utilities.closeDialog();
+      Get.snackbar("About User", "User message",
+          backgroundColor: Colors.redAccent,
+          snackPosition: SnackPosition.BOTTOM,
+          titleText: const Text(
+            "Account update failed",
             style: TextStyle(color: Colors.white),
           ),
           messageText:
@@ -113,52 +169,14 @@ class AuthController extends GetxController with StateMixin<dynamic> {
   }
 
   getUserData() async {
-    await FirebaseFirestore.instance.collection(Constants.USERS_COLLECTION_KEY)
-          .where('uid', isEqualTo: auth.currentUser!.uid)
-        .get().then((event) {
-      change(UserNote.empty().fromMap(event.docs[0].data()), status: RxStatus.success());
+    await FirebaseFirestore.instance
+        .collection(Constants.USERS_COLLECTION_KEY)
+        .where('uid', isEqualTo: auth.currentUser!.uid)
+        .get()
+        .then((event) {
+      change(UserNote.empty().fromMap(event.docs[0].id, event.docs[0].data()),
+          status: RxStatus.success());
     });
   }
 
-  void _showDialog(String text) {
-    Get.defaultDialog(
-        title: '',
-        barrierDismissible: false,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 60.0,
-              height: 60.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: CupertinoActivityIndicator(radius: 30),
-              ),
-            ),
-            const SizedBox(
-              height: 30.0,
-            ),
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'Quicksand',
-              ),
-            )
-          ],
-        ),
-        radius: 10.0);
-  }
-
-  void _closeDialog() {
-    if (Get.isDialogOpen!) {
-      Get.back();
-    }
-  }
 }

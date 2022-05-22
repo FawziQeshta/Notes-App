@@ -16,6 +16,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   ProfileController controller = Get.find();
+  TextEditingController fNameController = TextEditingController();
+  TextEditingController lNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
+  late UserNote userData;
 
   @override
   void initState() {
@@ -31,11 +37,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Column(
-            children: [
-              AuthController.instance.obx((data) {
-                var user = data as UserNote;
-                return Card(
+          child: AuthController.instance.obx((data) {
+            userData = data as UserNote;
+
+            fNameController.text = userData.fName;
+            lNameController.text = userData.lName;
+            phoneController.text = userData.phone;
+            emailController.text = userData.email;
+
+            return Column(
+              children: [
+                Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -52,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         decoration: const BoxDecoration(
                             color: AppColors.blue, shape: BoxShape.circle),
                         child: Text(
-                          user.name[0].toUpperCase(),
+                          userData.fullName[0].toUpperCase(),
                           style: const TextStyle(
                               fontSize: 20,
                               fontFamily: 'Helvetica Neue',
@@ -67,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                user.name,
+                                userData.fullName,
                                 maxLines: 1,
                                 style: const TextStyle(
                                     fontSize: 13,
@@ -80,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                user.email,
+                                userData.email,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -96,96 +108,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                );
-              }),
-              controller.obx(
-                (data) {
-                  var documentsCount = data as List<int>;
-                  return Row(
-                    children: [
-                      buildBoxNumbers('Categories', documentsCount[0]),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      buildBoxNumbers('Done Notes', documentsCount[1]),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      buildBoxNumbers('Waiting Notes', documentsCount[2]),
-                    ],
-                  );
-                },
-                onLoading: const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                  ),
                 ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                elevation: 3,
-                margin: const EdgeInsets.only(top: 15, bottom: 15),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20.0, right: 20.0, bottom: 20.0, top: 5),
-                  child: Column(
-                    children: [
-                      buildTextField(
-                          hint: "First Name",
-                          txtController: null,
-                          keyboardType: TextInputType.text),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      buildTextField(
-                          hint: "Last Name",
-                          txtController: null,
-                          keyboardType: TextInputType.text),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      buildTextField(
-                          hint: "Phone",
-                          txtController: null,
-                          keyboardType: TextInputType.phone),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      buildTextField(
-                          hint: "Email",
-                          txtController: null,
-                          keyboardType: TextInputType.emailAddress),
-                    ],
-                  ),
-                ),
-              ),
-              ConstrainedBox(
-                constraints: const BoxConstraints.tightFor(
-                    width: double.infinity, height: 46),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                controller.obx(
+                  (data) {
+                    var documentsCount = data as List<int>;
+                    return Row(
+                      children: [
+                        buildBoxNumbers('Categories', documentsCount[0]),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        buildBoxNumbers('Done Notes', documentsCount[1]),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        buildBoxNumbers('Waiting Notes', documentsCount[2]),
+                      ],
+                    );
+                  },
+                  onLoading: const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  elevation: 3,
+                  margin: const EdgeInsets.only(top: 15, bottom: 15),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, bottom: 20.0, top: 5),
+                    child: Column(
+                      children: [
+                        buildTextField(
+                            hint: "First Name",
+                            txtController: fNameController,
+                            keyboardType: TextInputType.text),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        buildTextField(
+                            hint: "Last Name",
+                            txtController: lNameController,
+                            keyboardType: TextInputType.text),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        buildTextField(
+                            hint: "Phone",
+                            txtController: phoneController,
+                            keyboardType: TextInputType.phone),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        buildTextField(
+                            hint: "Email",
+                            txtController: emailController,
+                            keyboardType: TextInputType.emailAddress),
+                      ],
+                    ),
+                  ),
+                ),
+                ConstrainedBox(
+                  constraints: const BoxConstraints.tightFor(
+                      width: double.infinity, height: 46),
+                  child: ElevatedButton(
+                    onPressed: () => AuthController.instance.
+                      updateUserData(userData.id, fNameController.text, lNameController.text, emailController.text,
+                        phoneController.text, userData.password),
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            );
+          }),
         ),
       ),
     );

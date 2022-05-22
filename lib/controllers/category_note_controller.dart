@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:notes/controllers/auth_controller.dart';
 import 'package:notes/models/category_note.dart';
 import 'package:notes/utils/constants.dart';
 
@@ -13,6 +14,7 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
     data.clear();
 
     await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
+        .where(Constants.USER_ID_KEY, isEqualTo: AuthController.instance.auth.currentUser?.uid)
         .where(Constants.NOTE_CAT_ID_KEY, isEqualTo: categoryId)
         .where(Constants.NOTE_STATUS_KEY, isEqualTo: Constants.NOTE_WAITING_STATS)
         .where(Constants.NOTE_IS_DELETED_KEY, isEqualTo: Constants.NOTE_NOT_DELETED)
@@ -24,6 +26,20 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
     }, onError: (error) {
       change(null, status: RxStatus.error(error));
     });
+  }
+
+  addCategoryNote({required CategoryNote note}) async {
+    Map<String, dynamic> noteMap = {
+      Constants.NOTE_TITLE_KEY : note.title,
+      Constants.NOTE_DESC_KEY : note.description,
+      Constants.NOTE_STATUS_KEY : note.status,
+      Constants.NOTE_IS_DELETED_KEY : note.isDeleted,
+      Constants.NOTE_CAT_ID_KEY : note.categoryId,
+    };
+
+    await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
+        .add(noteMap).then((value) => print('CategoryNote added'))
+        .onError((error, stackTrace) => print('CategoryNote failed: $error'));
   }
 
   changeStatusNote({required CategoryNote note}) async {
@@ -40,7 +56,7 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
         .set(newMap);
   }
 
-  deleteNote({required CategoryNote note}) async {
+  softDeleteNote({required CategoryNote note}) async {
     Map<String, dynamic> newMap = {
       Constants.NOTE_TITLE_KEY : note.title,
       Constants.NOTE_DESC_KEY : note.description,
@@ -53,5 +69,22 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
         .doc(note.id)
         .set(newMap);
   }
+
+  updateCategoryNote({required CategoryNote note}) async {
+    Map<String, dynamic> newMap = {
+      Constants.NOTE_TITLE_KEY : note.title,
+      Constants.NOTE_DESC_KEY : note.description
+    };
+
+    await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
+        .doc(note.id)
+        .update(newMap);
+  }
+
+  /*deleteCategoryNote({required String noteId}) async {
+    await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
+        .doc(noteId)
+        .delete();
+  }*/
 
 }

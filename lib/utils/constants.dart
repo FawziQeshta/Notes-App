@@ -8,11 +8,15 @@ class Constants {
   static const bool NOTE_DELETED = true;
   static const bool NOTE_NOT_DELETED = false;
 
+  static const String USER_ID_KEY = "uid";
   static const String NOTE_ID_KEY = "id";
   static const String NOTE_TITLE_KEY = "title";
   static const String NOTE_DESC_KEY = "description";
   static const String NOTE_STATUS_KEY = "status";
   static const String NOTE_IS_DELETED_KEY = "isDeleted";
   static const String NOTE_CAT_ID_KEY = "category_id";
+
+  static const String CATEGORY_TITLE_KEY = "title";
+  static const String CATEGORY_DESC_KEY = "description";
 
 }
