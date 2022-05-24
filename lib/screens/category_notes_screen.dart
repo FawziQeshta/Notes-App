@@ -38,7 +38,7 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
           appBar: CustomAppBar(
               title: 'Category Name',
               rightIconPath: 'assets/icons/add.svg',
-              action: ()=>Get.to(const CreateOrUpdateNoteScreen())),
+              action: () => Get.to(CreateOrUpdateNoteScreen(isUpdateNote: false, categoryId: widget.categoryId, noteUpdate: null,))),
           body: RefreshIndicator(
             onRefresh: () => controller.fetchData(categoryId: widget.categoryId),
             child: controller.obx((data) {
@@ -84,7 +84,7 @@ class _CategoryNotesScreenState extends State<CategoryNotesScreen> {
         isSelectionMode = selectedFlag.containsValue(true);
       });
     } else {
-      // Open Detail Page
+      Get.to(CreateOrUpdateNoteScreen(isUpdateNote: true, categoryId: widget.categoryId, noteUpdate: listNotes[index],));
     }
   }
 

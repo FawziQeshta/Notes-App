@@ -46,7 +46,8 @@ class _LauncherAppState extends State<LauncherApp> {
           GetPage(name: Routes.PROFILE_SCREEN, page: () => const ProfileScreen()),
           GetPage(name: Routes.CREATE_OR_UPDATE_NOTE_SCREEN, page: () =>
               CreateOrUpdateCategoryScreen(isUpdateCreate: false, categoryUpdate: null,)),
-          GetPage(name: Routes.CREATE_OR_UPDATE_CATEGORY_SCREEN, page: () => const CreateOrUpdateNoteScreen()),
+          GetPage(name: Routes.CREATE_OR_UPDATE_CATEGORY_SCREEN, page: () =>
+              CreateOrUpdateNoteScreen(isUpdateNote: false, categoryId: '', noteUpdate: null,)),
           GetPage(name: Routes.ABOUT_APP_SCREEN, page: () => const AboutAppScreen()),
           GetPage(name: Routes.ABOUT_COURSE_SCREEN, page: () => const AboutCourseScreen()),
         ]

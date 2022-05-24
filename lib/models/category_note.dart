@@ -11,6 +11,8 @@ class CategoryNote {
   bool isDeleted = false;
 
   CategoryNote(this.id, this.uid, this.title, this.description, this.categoryId, this.status);
+  CategoryNote.update(this.id, this.title, this.description);
+  CategoryNote.addNew(this.title, this.description, this.categoryId, this.status);
 
   CategoryNote.fromMap(this.id, Map<String, dynamic> map) {
     title = map[Constants.NOTE_TITLE_KEY];

@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:notes/controllers/category_note_controller.dart';
 import 'package:notes/custom_widgets/custom_appbar.dart';
+import 'package:notes/models/category_note.dart';
+import 'package:notes/utils/constants.dart';
 
 import '../utils/app_colors.dart';
 
 class CreateOrUpdateNoteScreen extends StatefulWidget {
-  const CreateOrUpdateNoteScreen({Key? key}) : super(key: key);
+
+  String categoryId;
+  bool isUpdateNote;
+  CategoryNote? noteUpdate;
+
+  CreateOrUpdateNoteScreen(
+      {Key? key, required this.isUpdateNote, required this.categoryId, required this.noteUpdate})
+      : super(key: key);
 
   @override
   State<CreateOrUpdateNoteScreen> createState() => _CreateOrUpdateNoteScreenState();
 }
 
 class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
+
+  String titlePage = '';
+  String descPage = '';
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  CategoryNoteController controller = Get.find();
 
   var hintStyle =  const TextStyle(
       fontSize: 20.0,
@@ -27,6 +44,20 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.isUpdateNote) {
+      titlePage = 'Edit Note';
+      descPage = 'Update Note';
+      titleController.text = widget.noteUpdate!.title;
+      descController.text = widget.noteUpdate!.description;
+    } else {
+      titlePage = 'New Note';
+      descPage = 'Create Note';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -40,9 +71,9 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'New Note',
-                style: TextStyle(
+               Text(
+                titlePage,
+                style: const TextStyle(
                   fontSize: 40.0,
                   fontWeight: FontWeight.w600,
                   fontFamily:'Nunito',
@@ -51,9 +82,9 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
               const SizedBox(
                 height: 10.0,
               ),
-              const Text(
-                'Create note',
-                style: TextStyle(
+               Text(
+                descPage,
+                style: const TextStyle(
                   color: AppColors.hintColor,
                   fontSize: 20.0,
                   fontWeight: FontWeight.w300,
@@ -69,6 +100,7 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
                   hintStyle: hintStyle
                 ),
                 style: textStyle,
+                controller: titleController,
               ),
               const SizedBox(
                 height: 30.0,
@@ -82,6 +114,7 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
                 maxLines: null,
                 textInputAction: TextInputAction.newline,
                 keyboardType: TextInputType.multiline,
+                controller: descController,
               ),
               const SizedBox(
                 height: 30.0,
@@ -93,7 +126,7 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
                     color: AppColors.blue,
                     borderRadius: BorderRadius.circular(50)),
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () => _saveButtonAction(),
                   child: const Text(
                     'Save',
                     style: TextStyle(
@@ -109,8 +142,16 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
           ),
         ),
       ),
-
-
     );
   }
+
+  _saveButtonAction() {
+    widget.isUpdateNote ? controller
+        .updateCategoryNote(note:
+    CategoryNote.update(widget.noteUpdate!.id, titleController.text, descController.text))
+        : controller.addCategoryNote(note:
+        CategoryNote.addNew(titleController.text, descController.text,
+              widget.categoryId, Constants.NOTE_WAITING_STATS));
+  }
+
 }

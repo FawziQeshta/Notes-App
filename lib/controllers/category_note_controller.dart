@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:notes/controllers/auth_controller.dart';
 import 'package:notes/models/category_note.dart';
 import 'package:notes/utils/constants.dart';
+import 'package:notes/utils/utilities.dart';
 
 class CategoryNoteController extends GetxController with StateMixin<List<dynamic>> {
 
@@ -30,6 +31,7 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
 
   addCategoryNote({required CategoryNote note}) async {
     Map<String, dynamic> noteMap = {
+      Constants.USER_ID_KEY : AuthController.instance.auth.currentUser?.uid,
       Constants.NOTE_TITLE_KEY : note.title,
       Constants.NOTE_DESC_KEY : note.description,
       Constants.NOTE_STATUS_KEY : note.status,
@@ -38,8 +40,14 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
     };
 
     await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
-        .add(noteMap).then((value) => print('CategoryNote added'))
-        .onError((error, stackTrace) => print('CategoryNote failed: $error'));
+        .add(noteMap).then((value) {
+      print('note added');
+      Utilities.closeDialog();
+      Get.back();
+    }).onError((error, stackTrace) {
+      print('note add failed: $error');
+      Utilities.closeDialog();
+    });
   }
 
   changeStatusNote({required CategoryNote note}) async {
@@ -78,7 +86,14 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
 
     await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
         .doc(note.id)
-        .update(newMap);
+        .update(newMap).then((value) {
+      print('note updated');
+      Utilities.closeDialog();
+      Get.back();
+    }).onError((error, stackTrace) {
+      print('note update failed: $error');
+      Utilities.closeDialog();
+    });
   }
 
   /*deleteCategoryNote({required String noteId}) async {
