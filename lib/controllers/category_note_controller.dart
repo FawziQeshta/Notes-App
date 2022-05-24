@@ -53,6 +53,7 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
 
   changeStatusNote({required CategoryNote note}) async {
     Map<String, dynamic> newMap = {
+      Constants.USER_ID_KEY : AuthController.instance.auth.currentUser?.uid,
       Constants.NOTE_TITLE_KEY : note.title,
       Constants.NOTE_DESC_KEY : note.description,
       Constants.NOTE_STATUS_KEY : Constants.NOTE_DONE_STATUS,

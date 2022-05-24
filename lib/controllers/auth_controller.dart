@@ -17,7 +17,7 @@ class AuthController extends GetxController with StateMixin<dynamic> {
   void register(String firstName, String lastName, String email, String phone,
       String password) async {
     try {
-      Utilities.showDialog('جاري انشاء الحساب، الرجاء الانتظار');
+      Utilities.showDialog('Creating an account, please wait');
 
       if (firstName.isEmpty ||
           lastName.isEmpty ||
@@ -90,7 +90,7 @@ class AuthController extends GetxController with StateMixin<dynamic> {
 
   void login(String email, String password) async {
     try {
-      Utilities.showDialog('...جاري تسجيل الدخول');
+      Utilities.showDialog('Signing in...');
 
       if (email.isEmpty || password.isEmpty) {
         Utilities.closeDialog();
@@ -122,7 +122,7 @@ class AuthController extends GetxController with StateMixin<dynamic> {
   void updateUserData(String id, String firstName, String lastName,
       String email, String phone, String password) async {
     try {
-      Utilities.showDialog('جاري تعديل البيانات، الرجاء الانتظار');
+      Utilities.showDialog('Editing data, please wait...');
 
       if (firstName.isEmpty ||
           lastName.isEmpty ||
@@ -171,7 +171,7 @@ class AuthController extends GetxController with StateMixin<dynamic> {
   getUserData() async {
     await FirebaseFirestore.instance
         .collection(Constants.USERS_COLLECTION_KEY)
-        .where('uid', isEqualTo: auth.currentUser!.uid)
+        .where(Constants.USER_ID_KEY, isEqualTo: auth.currentUser!.uid)
         .get()
         .then((event) {
       change(UserNote.empty().fromMap(event.docs[0].id, event.docs[0].data()),
