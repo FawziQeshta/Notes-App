@@ -7,6 +7,7 @@ import 'package:notes/utils/utilities.dart';
 
 class CategoryNoteController extends GetxController with StateMixin<List<dynamic>> {
 
+  static CategoryNoteController instance = Get.find();
   var db = FirebaseFirestore.instance;
   List<CategoryNote> data = [];
 
@@ -96,10 +97,14 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
     });
   }
 
-  /*deleteCategoryNote({required String noteId}) async {
-    await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
-        .doc(noteId)
-        .delete();
-  }*/
+  deleteCategoryNoteWithCategoryId({required String categoryId}) async {
+    QuerySnapshot querySnapshot = await db.collection(Constants.CATEGORY_NOTE_COLLECTION_KEY)
+        .where(Constants.NOTE_CAT_ID_KEY, isEqualTo: categoryId)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
 
 }

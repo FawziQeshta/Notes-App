@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:notes/controllers/auth_controller.dart';
+import 'package:notes/controllers/category_note_controller.dart';
 import 'package:notes/models/category.dart';
 import 'package:notes/utils/constants.dart';
 import 'package:notes/utils/utilities.dart';
@@ -75,6 +76,8 @@ class CategoryController extends GetxController with StateMixin<List<dynamic>> {
     await db.collection(Constants.CATEGORIES_COLLECTION_KEY)
         .doc(categoryId)
         .delete();
+
+    CategoryNoteController.instance.deleteCategoryNoteWithCategoryId(categoryId: categoryId);
   }
 
 
