@@ -33,6 +33,14 @@ class CategoryController extends GetxController with StateMixin<List<dynamic>> {
   }
 
   addCategory({required Category category}) async {
+
+    if (category.title.isEmpty || category.description.isEmpty) {
+      Utilities.closeDialog();
+      Get.snackbar(
+          "Add Category Error!", "All fields are required Please fill in them");
+      return;
+    }
+
     Utilities.showDialog('Category is being added...');
 
     Map<String, dynamic> categoryMap = {
@@ -53,6 +61,13 @@ class CategoryController extends GetxController with StateMixin<List<dynamic>> {
   }
 
   updateCategory({required Category category}) async {
+    if (category.title.isEmpty || category.description.isEmpty) {
+      Utilities.closeDialog();
+      Get.snackbar(
+          "Edit Category Error!", "All fields are required Please fill in them");
+      return;
+    }
+
     Utilities.showDialog('Category is being updated...');
 
     Map<String, dynamic> newMap = {

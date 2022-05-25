@@ -148,9 +148,9 @@ class _CreateOrUpdateNoteScreenState extends State<CreateOrUpdateNoteScreen> {
   _saveButtonAction() {
     widget.isUpdateNote ? controller
         .updateCategoryNote(note:
-    CategoryNote.update(widget.noteUpdate!.id, titleController.text, descController.text))
+    CategoryNote.update(widget.noteUpdate!.id, titleController.text.trim(), descController.text.trim()))
         : controller.addCategoryNote(note:
-        CategoryNote.addNew(titleController.text, descController.text,
+        CategoryNote.addNew(titleController.text.trim(), descController.text.trim(),
               widget.categoryId, Constants.NOTE_WAITING_STATS));
   }
 

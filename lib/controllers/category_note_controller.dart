@@ -31,6 +31,13 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
   }
 
   addCategoryNote({required CategoryNote note}) async {
+    if (note.title.isEmpty || note.description.isEmpty) {
+      Utilities.closeDialog();
+      Get.snackbar(
+          "Add Note Error!", "All fields are required Please fill in them");
+      return;
+    }
+
     Map<String, dynamic> noteMap = {
       Constants.USER_ID_KEY : AuthController.instance.auth.currentUser?.uid,
       Constants.NOTE_TITLE_KEY : note.title,
@@ -81,6 +88,13 @@ class CategoryNoteController extends GetxController with StateMixin<List<dynamic
   }
 
   updateCategoryNote({required CategoryNote note}) async {
+    if (note.title.isEmpty || note.description.isEmpty) {
+      Utilities.closeDialog();
+      Get.snackbar(
+          "Edit Note Error!", "All fields are required Please fill in them");
+      return;
+    }
+
     Map<String, dynamic> newMap = {
       Constants.NOTE_TITLE_KEY : note.title,
       Constants.NOTE_DESC_KEY : note.description

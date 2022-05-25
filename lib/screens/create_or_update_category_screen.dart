@@ -137,8 +137,8 @@ class _CreateOrUpdateCategoryScreenState
   _saveButtonAction() {
     widget.isUpdateCreate ? controller
         .updateCategory(category:
-    Category.update(widget.categoryUpdate!.id, titleController.text, descController.text))
-        : controller.addCategory(category: Category.addNew(titleController.text, descController.text));
+    Category.update(widget.categoryUpdate!.id, titleController.text.trim(), descController.text.trim()))
+        : controller.addCategory(category: Category.addNew(titleController.text.trim(), descController.text.trim()));
   }
 
 }
