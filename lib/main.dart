@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:notes/bindings/auth_binding.dart';
-import 'package:notes/bindings/category_binding.dart';
-import 'package:notes/bindings/profile_binding.dart';
 import 'package:notes/screens/about_app_screen.dart';
 import 'package:notes/screens/about_course_screen.dart';
 import 'package:notes/screens/categories_screen.dart';
